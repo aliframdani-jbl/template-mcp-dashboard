@@ -1,8 +1,27 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import AppConfigurator from './AppConfigurator.vue';
+import { PublicClientApplication } from '@azure/msal-browser';
 
 const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
+
+const msalConfig = {
+    auth: {
+        clientId: import.meta.env.VITE_AZURE_CLIENT_ID,
+        authority: 'https://login.microsoftonline.com/common',
+        redirectUri: window.location.origin
+    }
+};
+const msalInstance = new PublicClientApplication(msalConfig);
+
+const logout = async () => {
+    localStorage.removeItem('isAuthenticated');
+    await msalInstance.initialize();
+    await msalInstance.logoutPopup({
+        postLogoutRedirectUri: '/auth/login'
+    });
+    window.location.href = '/auth/login';
+};
 </script>
 
 <template>
@@ -71,6 +90,10 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                     <button type="button" class="layout-topbar-action">
                         <i class="pi pi-user"></i>
                         <span>Profile</span>
+                    </button>
+                    <button type="button" class="layout-topbar-action" @click="logout">
+                        <i class="pi pi-sign-out"></i>
+                        <span>Logout</span>
                     </button>
                 </div>
             </div>

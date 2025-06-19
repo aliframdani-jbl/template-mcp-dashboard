@@ -2,12 +2,14 @@
     "name": "sakai-vue",
     "version": "4.3.0",
     "scripts": {
+        "dev-expose": "vite --host",
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
         "lint": "eslint --fix . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
     },
     "dependencies": {
+        "@azure/msal-browser": "^4.13.2",
         "@primeuix/themes": "^1.0.0",
         "chart.js": "3.3.2",
         "primeicons": "^7.0.0",
